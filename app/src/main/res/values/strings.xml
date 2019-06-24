@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">CateView</string>
+
+    <string name="button_1">Belleza</string>
+    <string name="button_2">Gastronomía</string>
+    <string name="button_3">Ocio</string>
+    <string name="button_4">Shoping</string>
+    <string name="button_5">Viajes</string>
+    <string name="button_6">Salud</string>
+
+
+</resources>
