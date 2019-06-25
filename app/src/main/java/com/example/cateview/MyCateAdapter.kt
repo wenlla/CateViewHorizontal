@@ -2,6 +2,7 @@ package com.example.cateview
 
 import android.content.Context
 import android.content.res.Resources
+import android.graphics.Color
 import android.text.Layout
 import android.util.Log
 import android.view.LayoutInflater
@@ -51,10 +52,19 @@ class MyCateAdapter(private val context: Context, private val mTextData: List<Co
                     if (position == mTextData.size - 1) {
 
                         val paint = holder.itemName.paint
+
                         val textWidth = Layout.getDesiredWidth(entity.continentName, 0, entity.continentName.length, paint)
+
                         lastItemWidth = (textWidth + dip2px(context, 26.0f)).toInt()
+
                         Log.v("itemRl", lastItemWidth.toString())
                         Log.v("itemText", holder.itemName.width.toString())
+                    }
+                    //在0这个位置，改变text的颜色
+                    if(position == 0){
+
+                        holder.itemName.textColors?:(Color.parseColor("#93D099"))
+
                     }
 
                     holder.itemName.text = entity.continentName

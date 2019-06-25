@@ -1,6 +1,9 @@
 package com.example.cateview
 
+import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
+import android.widget.TextView
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,6 +33,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var miGallerySnapHelper: GallerySnapHelper
 
+    private var scrollStopTime = 0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,12 +63,11 @@ class MainActivity : AppCompatActivity() {
 
         mcGallerySnapHelper.attachToRecyclerView(textRecyclerView)
 
-
         imageRecyclerView = topImagen
 
         miAdapter = MyImageAdapter(listImage)
 
-        imageRecyclerView.layoutManager = LinearLayoutManager(this@MainActivity, RecyclerView.HORIZONTAL, false)
+        imageRecyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
 
         imageRecyclerView.adapter = miAdapter
 
@@ -83,33 +86,40 @@ class MainActivity : AppCompatActivity() {
                 val manager = recyclerView.layoutManager as LinearLayoutManager
 
                 // 当不滚动时
-                if (newState === RecyclerView.SCROLL_STATE_IDLE) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    var firstPosition = manager.findFirstCompletelyVisibleItemPosition()
                     //获取第一个完全显示的ItemPosition
-                    val firstPosotion = manager.findFirstCompletelyVisibleItemPosition()
-                    manager.findViewByPosition(firstPosotion)
+                    Log.v("position", firstPosition.toString())
+                    scrollStopTime += 1
+                    Log.v("position#####", scrollStopTime.toString())
+                    if (scrollStopTime == 2) {
+
+                        Log.v("position###", firstPosition.toString())
+                        scrollStopTime = 0
+                        manager.findViewByPosition(firstPosition)?.findViewById<TextView>(R.id.mainCateTv)
+                            ?.setTextColor(Color.GREEN)
+                    }
 
                 }
             }
 
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-            super.onScrolled(recyclerView, dx, dy)
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val manager = recyclerView.layoutManager as LinearLayoutManager
 
-                    val manager = recyclerView.layoutManager as LinearLayoutManager
+                var firstPosotion = manager.findFirstVisibleItemPosition()
 
-                    var firstPosotion = manager.findFirstVisibleItemPosition()
-
-                    //设置左边的RecyclerView的被点击
+                //设置左边的RecyclerView的被点击
 //                    mcAdapter(firstPosotion)
-                    //刷新左边的RecyclerView，否则选中无效(亲自踩坑)
-                    mcAdapter.notifyDataSetChanged()
+                //刷新左边的RecyclerView，否则选中无效(亲自踩坑)
+//                    mcAdapter.notifyDataSetChanged()
+            }
         }
-    }
 
 
         )
 
     }
-
 
 
     //text内容

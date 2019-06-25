@@ -4,6 +4,7 @@ import androidx.recyclerview.widget.OrientationHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.LinearLayoutManager
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.annotation.NonNull
@@ -22,10 +23,14 @@ import androidx.recyclerview.widget.SnapHelper
 
 
 //SnapHelper是一个抽象类，官方提供了一个LinearSnapHelper的子类，可以让RecyclerView滚动停止时相应的Item停留中间位置。
+interface OnGallerySnapScrollListener {
+    fun onTargetPosition(position: Int)
+}
 
 class GallerySnapHelper : SnapHelper() {
     private var mHorizontalHelper: OrientationHelper? = null
     private var mRecyclerView: RecyclerView? = null
+    private var gallerySnapCallback: OnGallerySnapScrollListener? = null
 
     //SnapHelper通过attachToRecyclerView()方法附着到RecyclerView上，从而实现辅助RecyclerView滚动对齐操作。
     @Throws(IllegalStateException::class)
@@ -179,6 +184,9 @@ class GallerySnapHelper : SnapHelper() {
         if (targetPos >= itemCount) {
             targetPos = itemCount - 1
         }
+
+        Log.v("position",targetPos.toString())
+        gallerySnapCallback?.onTargetPosition(targetPos)
         return targetPos
     }
 
@@ -285,6 +293,10 @@ class GallerySnapHelper : SnapHelper() {
             mHorizontalHelper = OrientationHelper.createHorizontalHelper(layoutManager)
         }
         return mHorizontalHelper!!
+    }
+
+    fun setOnGallerySnapScrollListener(listener: OnGallerySnapScrollListener) {
+        this.gallerySnapCallback = listener
     }
 
     companion object {
