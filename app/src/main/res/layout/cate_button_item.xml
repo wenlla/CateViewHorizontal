@@ -17,7 +17,7 @@
             android:textSize="16sp"
             android:paddingVertical="5dp"
             android:paddingHorizontal="8dp"
-            android:background="@drawable/shape_button"
+            android:background="@drawable/shape_textcate"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"/>
 

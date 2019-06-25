@@ -1,12 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="vertical"
+        tools:context=".MainActivity">
 
-    <ImageView
-            android:id="@+id/imagen"
-            android:layout_width="200dp"
+    <com.howshea.roundcornerimageview.RoundCornerImageView
+            android:id="@+id/mainTopIV"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:layout_width="300dp"
             android:layout_height="150dp"
-            android:background="@color/colorAccent"/>
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            app:ratio="1.7"
+            app:radius="20dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+    <TextView
+            android:id="@+id/mainTopTV"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="22sp"
+            android:background="@color/green"
+            android:text="xxxxxxxxxxxxxxxxx"
+            android:textColor="@color/white"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/mainTopIV"
+            tools:layout_editor_absoluteX="0dp"
+            android:layout_marginBottom="16dp"/>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

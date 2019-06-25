@@ -13,11 +13,23 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var textRecyclerView: RecyclerView
 
-    private lateinit var mAdapter: MyAdapter
+    private lateinit var imageRecyclerView: RecyclerView
 
-    private lateinit var list: MutableList<TextContentModel>
 
-    private lateinit var mGallerySnapHelper: GallerySnapHelper
+    private lateinit var mcAdapter: MyCateAdapter
+
+    private lateinit var miAdapter: MyImageAdapter
+
+
+    private lateinit var listText: MutableList<ContinentTextModel>
+
+    private lateinit var listImage: MutableList<ImageModel>
+
+
+    private lateinit var mcGallerySnapHelper: GallerySnapHelper
+
+    private lateinit var miGallerySnapHelper: GallerySnapHelper
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,68 +39,109 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
 
-        initData()
+        iniTextData()
+
+        initImageData()
+
 
 
         textRecyclerView = cateButton
 
-        mAdapter = MyAdapter(this, list)
+        mcAdapter = MyCateAdapter(this, listText)
 
         textRecyclerView.setHasFixedSize(true)
 
         textRecyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
 
-        textRecyclerView.adapter = mAdapter
+        textRecyclerView.adapter = mcAdapter
 
-        mGallerySnapHelper = GallerySnapHelper()
+        mcGallerySnapHelper = GallerySnapHelper()
 
-        mGallerySnapHelper.attachToRecyclerView(textRecyclerView)
+        mcGallerySnapHelper.attachToRecyclerView(textRecyclerView)
 
+
+        imageRecyclerView = topImagen
+
+        miAdapter = MyImageAdapter(listImage)
+
+        imageRecyclerView.layoutManager = LinearLayoutManager(this@MainActivity, RecyclerView.HORIZONTAL, false)
+
+        imageRecyclerView.adapter = miAdapter
+
+        miGallerySnapHelper = GallerySnapHelper()
+
+        miGallerySnapHelper.attachToRecyclerView(imageRecyclerView)
+
+
+
+        textRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+
+                super.onScrollStateChanged(recyclerView, newState)
+
+                val manager = recyclerView.layoutManager as LinearLayoutManager
+
+                // 当不滚动时
+                if (newState === RecyclerView.SCROLL_STATE_IDLE) {
+                    //获取第一个完全显示的ItemPosition
+                    val firstPosotion = manager.findFirstCompletelyVisibleItemPosition()
+                    manager.findViewByPosition(firstPosotion)
+
+                }
+            }
+
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+
+                    val manager = recyclerView.layoutManager as LinearLayoutManager
+
+                    var firstPosotion = manager.findFirstVisibleItemPosition()
+
+                    //设置左边的RecyclerView的被点击
+//                    mcAdapter(firstPosotion)
+                    //刷新左边的RecyclerView，否则选中无效(亲自踩坑)
+                    mcAdapter.notifyDataSetChanged()
+        }
+    }
+
+
+        )
 
     }
 
-    //text内容
-    private fun initData() {
-        list = ArrayList()
-        list.add(TextContentModel("Belleza"))
-        list.add(TextContentModel("Gastronomía"))
-        list.add(TextContentModel("Ocio"))
-        list.add(TextContentModel("Shoping"))
-        list.add(TextContentModel("Viajes"))
-        list.add(TextContentModel("Salud"))
-        list.add(TextContentModel("Belleza"))
-        list.add(TextContentModel("Gastronomía"))
-        list.add(TextContentModel("Ocio"))
-        list.add(TextContentModel("Shoping"))
-        list.add(TextContentModel("Viajes"))
-        list.add(TextContentModel("Salud"))
-        list.add(TextContentModel("Belleza"))
-        list.add(TextContentModel("Gastronomía"))
-        list.add(TextContentModel("qqqqqqqqqq"))
-        list.add(TextContentModel("wwwwwwwwwww"))
-        list.add(TextContentModel("eeeeeeeee"))
-        list.add(TextContentModel("cccccccccc"))
-        list.add(TextContentModel("cccccccccccc"))
-        list.add(TextContentModel("ggggggggggg"))
-        list.add(TextContentModel("ewqaxdffxxx vvvvv"))
-        list.add(TextContentModel("bbbbbbbbbbb"))
-        list.add(TextContentModel("xxxxxxxxx"))
-        list.add(TextContentModel("zzzzzzzzzzz"))
-        list.add(TextContentModel("wwwwwwwwww"))
-        list.add(TextContentModel("oooooooooooooooooo"))
-        list.add(TextContentModel("nnnnnnnnnnnnnn"))
-        list.add(TextContentModel("yyyyyyyyyyyyyyy"))
-        list.add(TextContentModel("mmmmmmmmmmmmm"))
-        list.add(TextContentModel("qqqqqqqqqqqqq"))
-        list.add(TextContentModel("fghjkggfhfthdtrhd"))
-        list.add(TextContentModel("sergrgfxvxv"))
-        list.add(TextContentModel("dgsdsdzvcx x"))
-        list.add(TextContentModel("svdsvvdv"))
-        list.add(TextContentModel("fsdfdsvds"))
-        list.add(TextContentModel("svsdvzdsvdsv"))
-        list.add(TextContentModel("vdsvsvfv"))
-        list.add(TextContentModel("Shopinccsffgfthfg"))
 
+
+    //text内容
+    private fun iniTextData() {
+        listText = ArrayList()
+        listText.add(ContinentTextModel("Belleza"))
+        listText.add(ContinentTextModel("Gastronomía"))
+        listText.add(ContinentTextModel("Ocio"))
+        listText.add(ContinentTextModel("Shoping"))
+        listText.add(ContinentTextModel("Viajes"))
+        listText.add(ContinentTextModel("Salud"))
+        listText.add(ContinentTextModel("Belleza"))
+        listText.add(ContinentTextModel("Gastronomía"))
+        listText.add(ContinentTextModel("Ocio"))
+        listText.add(ContinentTextModel("Shoping"))
+        listText.add(ContinentTextModel("Viajes"))
+        listText.add(ContinentTextModel("Salud"))
+        listText.add(ContinentTextModel("Belleza"))
+        listText.add(ContinentTextModel("Gastronomía"))
+        listText.add(ContinentTextModel("qqqqqqqqqq"))
+        listText.add(ContinentTextModel("wwwwwwwwwww"))
+        listText.add(ContinentTextModel("eeeeeeeee"))
+        listText.add(ContinentTextModel("cccccccccc"))
+
+    }
+
+    //image 浮现文字内容
+    private fun initImageData() {
+        listImage = ArrayList()
+        for (i in 0..10) {
+            listImage.add(ImageModel(i))
+        }
     }
 
 }

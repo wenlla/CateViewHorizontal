@@ -9,15 +9,14 @@ import android.content.Context
 import android.util.Log
 import android.view.WindowManager
 import com.example.cateview.DensityUtil.dip2px
-import com.example.cateview.DensityUtil.px2dip
-import com.example.cateview.DensityUtil.px2sp
 import kotlinx.android.synthetic.main.footer_item.view.*
 
 
 const val TYPE_FOOTER = 0
 const val TYPE_ITEM = 1
 
-class MyAdapter(private val context: Context, private val entityList: List<TextContentModel>) :
+class MyCateAdapter(private val context: Context, private val mTextData: List<ContinentTextModel>) :
+
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var lastItemWidth = 0
@@ -42,13 +41,13 @@ class MyAdapter(private val context: Context, private val entityList: List<TextC
     //填充啥数据
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
-        if (position != entityList.size) {
+        if (position != mTextData.size) {
 
-            val entity = entityList[position]
+            val entity = mTextData[position]
 
             if (holder is VHItem) {
                 try {
-                    if (position == entityList.size - 1) {
+                    if (position == mTextData.size - 1) {
 
                         lastItemWidth = holder.itemRl.width + dip2px(context, 10.0f).toInt()
 
@@ -56,7 +55,7 @@ class MyAdapter(private val context: Context, private val entityList: List<TextC
                         Log.v("itemText", holder.itemName.width.toString())
                     }
 
-                    holder.itemName.text = entity.buttonName
+                    holder.itemName.text = entity.continentName
 
                 } catch (e: Exception) {
                     e.printStackTrace()
@@ -82,14 +81,14 @@ class MyAdapter(private val context: Context, private val entityList: List<TextC
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (position == entityList.size) TYPE_FOOTER else TYPE_ITEM
+        return if (position == mTextData.size) TYPE_FOOTER else TYPE_ITEM
 
 
     }
 
     //有多少个 item
     override fun getItemCount(): Int {
-        return entityList.size + 1
+        return mTextData.size + 1
     }
 
 
