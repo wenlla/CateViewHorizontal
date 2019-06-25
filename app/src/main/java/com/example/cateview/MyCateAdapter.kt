@@ -1,14 +1,15 @@
 package com.example.cateview
 
+import android.content.Context
+import android.content.res.Resources
+import android.text.Layout
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.cate_button_item.view.*
-import android.content.Context
-import android.util.Log
-import android.view.WindowManager
 import com.example.cateview.DensityUtil.dip2px
+import kotlinx.android.synthetic.main.cate_button_item.view.*
 import kotlinx.android.synthetic.main.footer_item.view.*
 
 
@@ -26,12 +27,12 @@ class MyCateAdapter(private val context: Context, private val mTextData: List<Co
 
         return if (viewType == TYPE_ITEM) {
 
-            val viewItem = LayoutInflater.from(parent.context).inflate(R.layout.cate_button_item, parent, false)
+            val viewItem = LayoutInflater.from(context).inflate(R.layout.cate_button_item, parent, false)
 
             VHItem(viewItem)
         } else {
 
-            val viewFooter = LayoutInflater.from(parent.context).inflate(R.layout.footer_item, parent, false)
+            val viewFooter = LayoutInflater.from(context).inflate(R.layout.footer_item, parent, false)
 
             VHFooter(viewFooter)
         }
@@ -49,8 +50,9 @@ class MyCateAdapter(private val context: Context, private val mTextData: List<Co
                 try {
                     if (position == mTextData.size - 1) {
 
-                        lastItemWidth = holder.itemRl.width + dip2px(context, 10.0f).toInt()
-
+                        val paint = holder.itemName.paint
+                        val textWidth = Layout.getDesiredWidth(entity.continentName, 0, entity.continentName.length, paint)
+                        lastItemWidth = (textWidth + dip2px(context, 26.0f)).toInt()
                         Log.v("itemRl", lastItemWidth.toString())
                         Log.v("itemText", holder.itemName.width.toString())
                     }
@@ -65,19 +67,13 @@ class MyCateAdapter(private val context: Context, private val mTextData: List<Co
         } else {
             if (holder is VHFooter) {
 
-                var wm: WindowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-
-                var width = wm.defaultDisplay.width
+                val width = Resources.getSystem().displayMetrics.widthPixels
 
                 Log.v("itemText", width.toString())
 
                 holder.itemRl.layoutParams = ViewGroup.LayoutParams((width - lastItemWidth), 30)
-
-                holder.itemRl.invalidate()
             }
         }
-
-
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -91,16 +87,12 @@ class MyCateAdapter(private val context: Context, private val mTextData: List<Co
         return mTextData.size + 1
     }
 
-
     inner class VHItem(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var itemName = itemView.mainCateTv
-        var itemRl = itemView.mainCateRl
     }
 
     inner class VHFooter(footerView: View) : RecyclerView.ViewHolder(footerView) {
         var itemRl = footerView.mainCateFooterRl
-
     }
-
 
 }
