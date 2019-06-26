@@ -3,11 +3,12 @@ package com.example.cateview
 import android.content.Context
 import android.content.res.Resources
 import android.graphics.Color
+import android.graphics.Typeface
 import android.text.Layout
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cateview.DensityUtil.dip2px
 import kotlinx.android.synthetic.main.cate_button_item.view.*
@@ -57,18 +58,19 @@ class MyCateAdapter(private val context: Context, private val mTextData: List<Co
 
                         lastItemWidth = (textWidth + dip2px(context, 26.0f)).toInt()
 
-                        Log.v("itemRl", lastItemWidth.toString())
-                        Log.v("itemText", holder.itemName.width.toString())
-                    }
-                    //在0这个位置，改变text的颜色
-                    if(position == 0){
-
-                        holder.itemName.textColors?:(Color.parseColor("#93D099"))
-
                     }
 
                     holder.itemName.text = entity.continentName
 
+//                    //在0这个位置，改变text的颜色
+//                    if(position == 0){
+//
+//                        textChange(holder.itemName)
+//
+//                        Log.v("第一个位置", holder.itemName.toString())
+//
+//
+//                    }
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
@@ -78,8 +80,6 @@ class MyCateAdapter(private val context: Context, private val mTextData: List<Co
             if (holder is VHFooter) {
 
                 val width = Resources.getSystem().displayMetrics.widthPixels
-
-                Log.v("itemText", width.toString())
 
                 holder.itemRl.layoutParams = ViewGroup.LayoutParams((width - lastItemWidth), 30)
             }
@@ -104,5 +104,24 @@ class MyCateAdapter(private val context: Context, private val mTextData: List<Co
     inner class VHFooter(footerView: View) : RecyclerView.ViewHolder(footerView) {
         var itemRl = footerView.mainCateFooterRl
     }
+
+    fun textChange(textView: TextView) {
+
+        textView.setTextColor(Color.parseColor("#93D099"))
+        textView.setTypeface(null, Typeface.BOLD)
+        textView.background = null
+
+    }
+
+    fun textChangeBack(textView: TextView) {
+
+        textView.setTextColor(Color.BLACK)
+
+        textView.setTypeface(null, Typeface.NORMAL)
+
+        textView.setBackgroundResource(R.drawable.shape_textcate)
+
+    }
+
 
 }

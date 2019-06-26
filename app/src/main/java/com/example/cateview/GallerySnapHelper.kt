@@ -24,7 +24,7 @@ import androidx.recyclerview.widget.SnapHelper
 
 //SnapHelper是一个抽象类，官方提供了一个LinearSnapHelper的子类，可以让RecyclerView滚动停止时相应的Item停留中间位置。
 interface OnGallerySnapScrollListener {
-    fun onTargetPosition(position: Int)
+    fun onTargetView(view: View)
 }
 
 class GallerySnapHelper : SnapHelper() {
@@ -53,7 +53,13 @@ class GallerySnapHelper : SnapHelper() {
         } else {
             out[0] = 0
         }
+        if (out[0] == 0) {
+            gallerySnapCallback?.onTargetView(targetView)
+        }
+
         return out
+
+
     }
 
     //targetView的start坐标与RecyclerView的paddingStart之间的差值
@@ -185,8 +191,7 @@ class GallerySnapHelper : SnapHelper() {
             targetPos = itemCount - 1
         }
 
-        Log.v("position",targetPos.toString())
-        gallerySnapCallback?.onTargetPosition(targetPos)
+        Log.v("position", targetPos.toString())
         return targetPos
     }
 
@@ -205,6 +210,10 @@ class GallerySnapHelper : SnapHelper() {
             }
 
             if (layoutManager.findLastCompletelyVisibleItemPosition() == layoutManager.getItemCount() - 1) {
+
+                gallerySnapCallback?.onTargetView(layoutManager.findViewByPosition(layoutManager.findFirstCompletelyVisibleItemPosition())!!)
+
+                Log.v("findViewByPosition",gallerySnapCallback.toString())
                 return null
             }
 

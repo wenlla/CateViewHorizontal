@@ -1,15 +1,22 @@
 package com.example.cateview
 
+import android.app.DatePickerDialog
 import android.graphics.Color
+import android.graphics.Typeface
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.TextView
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_main.*
-import java.util.ArrayList
+import java.util.*
+import android.opengl.ETC1.getHeight
+import android.view.ViewTreeObserver
+import android.view.ViewTreeObserver.OnGlobalLayoutListener
 
 
 class MainActivity : AppCompatActivity() {
@@ -33,7 +40,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var miGallerySnapHelper: GallerySnapHelper
 
-    private var scrollStopTime = 0
+
+    private var currentSelectedView: View? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,6 +71,28 @@ class MainActivity : AppCompatActivity() {
 
         mcGallerySnapHelper.attachToRecyclerView(textRecyclerView)
 
+        mcGallerySnapHelper.setOnGallerySnapScrollListener(object : OnGallerySnapScrollListener {
+
+            override fun onTargetView(view: View) {
+
+                if (currentSelectedView != view) {
+
+                    (currentSelectedView?.findViewById<TextView>(R.id.mainCateTv))?.let {
+
+                        mcAdapter.textChangeBack(it)
+                    }
+
+                    mcAdapter.textChange(view.findViewById(R.id.mainCateTv))
+
+                    currentSelectedView = view
+
+                }
+
+            }
+
+        })
+
+
         imageRecyclerView = topImagen
 
         miAdapter = MyImageAdapter(listImage)
@@ -75,49 +105,6 @@ class MainActivity : AppCompatActivity() {
 
         miGallerySnapHelper.attachToRecyclerView(imageRecyclerView)
 
-
-
-        textRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-
-                super.onScrollStateChanged(recyclerView, newState)
-
-                val manager = recyclerView.layoutManager as LinearLayoutManager
-
-                // 当不滚动时
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    var firstPosition = manager.findFirstCompletelyVisibleItemPosition()
-                    //获取第一个完全显示的ItemPosition
-                    Log.v("position", firstPosition.toString())
-                    scrollStopTime += 1
-                    Log.v("position#####", scrollStopTime.toString())
-                    if (scrollStopTime == 2) {
-
-                        Log.v("position###", firstPosition.toString())
-                        scrollStopTime = 0
-                        manager.findViewByPosition(firstPosition)?.findViewById<TextView>(R.id.mainCateTv)
-                            ?.setTextColor(Color.GREEN)
-                    }
-
-                }
-            }
-
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                val manager = recyclerView.layoutManager as LinearLayoutManager
-
-                var firstPosotion = manager.findFirstVisibleItemPosition()
-
-                //设置左边的RecyclerView的被点击
-//                    mcAdapter(firstPosotion)
-                //刷新左边的RecyclerView，否则选中无效(亲自踩坑)
-//                    mcAdapter.notifyDataSetChanged()
-            }
-        }
-
-
-        )
 
     }
 
@@ -153,5 +140,6 @@ class MainActivity : AppCompatActivity() {
             listImage.add(ImageModel(i))
         }
     }
+
 
 }
