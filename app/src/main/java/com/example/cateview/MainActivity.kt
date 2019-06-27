@@ -15,8 +15,11 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 import android.opengl.ETC1.getHeight
+import android.os.Handler
+import android.view.MotionEvent
 import android.view.ViewTreeObserver
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
+import kotlinx.android.synthetic.main.top10_item.view.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -55,7 +58,11 @@ class MainActivity : AppCompatActivity() {
 
         initImageData()
 
+        initView()
 
+    }
+
+    private fun initView() {
 
         textRecyclerView = cateButton
 
@@ -70,6 +77,22 @@ class MainActivity : AppCompatActivity() {
         mcGallerySnapHelper = GallerySnapHelper()
 
         mcGallerySnapHelper.attachToRecyclerView(textRecyclerView)
+
+
+
+        imageRecyclerView = topImagen
+
+        miAdapter = MyImageAdapter(listImage)
+
+        imageRecyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
+
+        imageRecyclerView.adapter = miAdapter
+
+        miGallerySnapHelper = GallerySnapHelper()
+
+        miGallerySnapHelper.attachToRecyclerView(imageRecyclerView)
+
+
 
         mcGallerySnapHelper.setOnGallerySnapScrollListener(object : OnGallerySnapScrollListener {
 
@@ -88,23 +111,51 @@ class MainActivity : AppCompatActivity() {
 
                 }
 
+                Log.v("firstView", view.toString())
             }
 
         })
 
+        textRecyclerView.viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
 
-        imageRecyclerView = topImagen
+            override fun onPreDraw(): Boolean {
 
-        miAdapter = MyImageAdapter(listImage)
+                textRecyclerView.viewTreeObserver.removeOnPreDrawListener(this)
 
-        imageRecyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
+                mcAdapter.textChange(textRecyclerView.getChildAt(0).findViewById(R.id.mainCateTv))
 
-        imageRecyclerView.adapter = miAdapter
+                return true
+            }
+        })
 
-        miGallerySnapHelper = GallerySnapHelper()
 
-        miGallerySnapHelper.attachToRecyclerView(imageRecyclerView)
+        textRecyclerView.addOnItemTouchListener(RecyclerItemClickListener(baseContext, textRecyclerView,
+            object : RecyclerItemClickListener.OnItemClickListener {
 
+                    override fun onItemClick(view: View, position: Int) {
+
+                        Log.v("onItemClickText", view.toString() + position.toString())
+                    }
+
+                    override fun onItemLongClick(view: View, position: Int) {
+
+                        Log.v("onItemLongClickText", view.toString() + position.toString())
+                    }
+                }))
+
+        imageRecyclerView.addOnItemTouchListener(RecyclerItemClickListener(baseContext, textRecyclerView,
+            object : RecyclerItemClickListener.OnItemClickListener {
+
+                override fun onItemClick(view: View, position: Int) {
+
+                    Log.v("onItemClickImage", view.toString() + position.toString())
+                }
+
+                override fun onItemLongClick(view: View, position: Int) {
+
+                    Log.v("onItemLongClickImage", view.toString() + position.toString())
+                }
+            }))
 
     }
 

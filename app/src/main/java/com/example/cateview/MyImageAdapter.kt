@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.top10_item.view.*
 
 class MyImageAdapter(private val mImageData: List<ImageModel>) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    RecyclerView.Adapter<MyImageAdapter.ItemViewHolder>() {
 
     var imgs = intArrayOf(
         R.drawable.aa,
@@ -25,22 +25,22 @@ class MyImageAdapter(private val mImageData: List<ImageModel>) :
     )
 
     //决定了 item 长啥样
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
 
         return ItemViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.top10_item, parent, false))
 
     }
 
     //填充啥数据
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
 
         val entity = mImageData[position]
 
-        holder.itemView.mainTopIV.setImageResource(imgs[position % 9])
+        holder.itemImage.setImageResource(imgs[position % 9])
 
-        holder.itemView.mainTopTV.text = entity.continentImage.toString()
+        holder.itemText.text = entity.continentImage.toString()
 
-        holder.itemView.mainTopTV.background.alpha = 200
+        holder.itemText.background.alpha = 200
 
     }
 
@@ -51,10 +51,11 @@ class MyImageAdapter(private val mImageData: List<ImageModel>) :
 
 
     inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-//        var itemText = itemView.mainTopTV
-//        var itemImage = itemView.mainTopIV
-    }
 
+        var itemText = itemView.mainTopTV
+
+        var itemImage = itemView.mainTopIV
+    }
 
 
 }

@@ -62,15 +62,6 @@ class MyCateAdapter(private val context: Context, private val mTextData: List<Co
 
                     holder.itemName.text = entity.continentName
 
-//                    //在0这个位置，改变text的颜色
-//                    if(position == 0){
-//
-//                        textChange(holder.itemName)
-//
-//                        Log.v("第一个位置", holder.itemName.toString())
-//
-//
-//                    }
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
@@ -104,6 +95,13 @@ class MyCateAdapter(private val context: Context, private val mTextData: List<Co
     inner class VHFooter(footerView: View) : RecyclerView.ViewHolder(footerView) {
         var itemRl = footerView.mainCateFooterRl
     }
+
+    fun   getData():List<ContinentTextModel>{
+
+        return mTextData
+    }
+
+
 
     fun textChange(textView: TextView) {
 
