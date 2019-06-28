@@ -190,8 +190,6 @@ class GallerySnapHelper : SnapHelper() {
         if (targetPos >= itemCount) {
             targetPos = itemCount - 1
         }
-
-        Log.v("position", targetPos.toString())
         return targetPos
     }
 
@@ -210,10 +208,7 @@ class GallerySnapHelper : SnapHelper() {
             }
 
             if (layoutManager.findLastCompletelyVisibleItemPosition() == layoutManager.getItemCount() - 1) {
-
                 gallerySnapCallback?.onTargetView(layoutManager.findViewByPosition(layoutManager.findFirstCompletelyVisibleItemPosition())!!)
-
-                Log.v("findViewByPosition", gallerySnapCallback.toString())
                 return null
             }
 

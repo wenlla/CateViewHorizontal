@@ -7,45 +7,24 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.MotionEvent
 
 
-class RecyclerItemClickListener : RecyclerView.OnItemTouchListener {
+class RecyclerItemClickListener
+    (context: Context, listener: OnItemClickListener) : RecyclerView.OnItemTouchListener {
 
+    private  var mListener: OnItemClickListener = listener
 
-    private  var mListener: OnItemClickListener
-
-    private  var gestureDetector: GestureDetector
+    private  var gestureDetector = GestureDetector(context, object : GestureDetector.SimpleOnGestureListener() {
+        override fun onSingleTapUp(e: MotionEvent): Boolean {
+            return true
+        }
+    })
 
     interface OnItemClickListener {
-
         fun onItemClick(view: View, position: Int)
     }
 
-
-    constructor (context: Context, recyclerView: RecyclerView, listener: OnItemClickListener) {
-
-        mListener = listener
-
-        //GestureDetector手势识别
-
-        gestureDetector = GestureDetector(context, object : GestureDetector.SimpleOnGestureListener() {
-
-            override fun onSingleTapUp(e: MotionEvent): Boolean {
-
-                val child = recyclerView.findChildViewUnder(e.x, e.y)
-
-                if (child != null && mListener != null) {
-
-                }
-                return true
-            }
-        })
-    }
-
     override fun onInterceptTouchEvent(view: RecyclerView, e: MotionEvent): Boolean {
-
         val childView = view.findChildViewUnder(e.x, e.y)
-
-        if (childView != null && mListener != null && gestureDetector.onTouchEvent(e)) {
-
+        if (childView != null && gestureDetector.onTouchEvent(e)) {
             mListener.onItemClick(childView, view.getChildAdapterPosition(childView))
             return true
         }
@@ -53,13 +32,9 @@ class RecyclerItemClickListener : RecyclerView.OnItemTouchListener {
     }
 
     override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
-
-
 }
 
