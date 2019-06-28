@@ -213,7 +213,7 @@ class GallerySnapHelper : SnapHelper() {
 
                 gallerySnapCallback?.onTargetView(layoutManager.findViewByPosition(layoutManager.findFirstCompletelyVisibleItemPosition())!!)
 
-                Log.v("findViewByPosition",gallerySnapCallback.toString())
+                Log.v("findViewByPosition", gallerySnapCallback.toString())
                 return null
             }
 

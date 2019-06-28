@@ -17,14 +17,14 @@ class RecyclerItemClickListener : RecyclerView.OnItemTouchListener {
     interface OnItemClickListener {
 
         fun onItemClick(view: View, position: Int)
-
-        fun onItemLongClick(view: View, position: Int)
     }
 
 
     constructor (context: Context, recyclerView: RecyclerView, listener: OnItemClickListener) {
 
         mListener = listener
+
+        //GestureDetector手势识别
 
         gestureDetector = GestureDetector(context, object : GestureDetector.SimpleOnGestureListener() {
 
@@ -34,19 +34,8 @@ class RecyclerItemClickListener : RecyclerView.OnItemTouchListener {
 
                 if (child != null && mListener != null) {
 
-                    mListener.onItemClick(child, recyclerView.getChildAdapterPosition(child))
                 }
                 return true
-            }
-
-            override fun onLongPress(e: MotionEvent) {
-
-                val child = recyclerView.findChildViewUnder(e.x, e.y)
-
-                if (child != null && mListener != null) {
-
-                    mListener.onItemLongClick(child, recyclerView.getChildAdapterPosition(child))
-                }
             }
         })
     }

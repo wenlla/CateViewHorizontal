@@ -1,9 +1,5 @@
 package com.example.cateview
 
-import android.app.DatePickerDialog
-import android.graphics.Color
-import android.graphics.Typeface
-import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -14,12 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
-import android.opengl.ETC1.getHeight
-import android.os.Handler
-import android.view.MotionEvent
 import android.view.ViewTreeObserver
-import android.view.ViewTreeObserver.OnGlobalLayoutListener
-import kotlinx.android.synthetic.main.top10_item.view.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -67,6 +58,8 @@ class MainActivity : AppCompatActivity() {
         textRecyclerView = cateButton
 
         mcAdapter = MyCateAdapter(this, listText)
+
+        //当我们确定Item的改变不会影响RecyclerView的宽高的时候可以设置setHasFixedSize(true)
 
         textRecyclerView.setHasFixedSize(true)
 
@@ -129,33 +122,32 @@ class MainActivity : AppCompatActivity() {
         })
 
 
-        textRecyclerView.addOnItemTouchListener(RecyclerItemClickListener(baseContext, textRecyclerView,
-            object : RecyclerItemClickListener.OnItemClickListener {
+        textRecyclerView.addOnItemTouchListener(
+
+            RecyclerItemClickListener(baseContext, textRecyclerView,
+
+                object : RecyclerItemClickListener.OnItemClickListener {
 
                     override fun onItemClick(view: View, position: Int) {
 
-                        Log.v("onItemClickText", view.toString() + position.toString())
+                        Log.v("onItemClickText", position.toString())
                     }
+                })
+        )
 
-                    override fun onItemLongClick(view: View, position: Int) {
 
-                        Log.v("onItemLongClickText", view.toString() + position.toString())
+        imageRecyclerView.addOnItemTouchListener(
+
+            RecyclerItemClickListener(baseContext, imageRecyclerView,
+
+                object : RecyclerItemClickListener.OnItemClickListener {
+
+                    override fun onItemClick(view: View, position: Int) {
+
+                        Log.v("onItemClickImage", position.toString())
                     }
-                }))
-
-        imageRecyclerView.addOnItemTouchListener(RecyclerItemClickListener(baseContext, textRecyclerView,
-            object : RecyclerItemClickListener.OnItemClickListener {
-
-                override fun onItemClick(view: View, position: Int) {
-
-                    Log.v("onItemClickImage", view.toString() + position.toString())
-                }
-
-                override fun onItemLongClick(view: View, position: Int) {
-
-                    Log.v("onItemLongClickImage", view.toString() + position.toString())
-                }
-            }))
+                })
+        )
 
     }
 
